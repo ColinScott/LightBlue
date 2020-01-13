@@ -1,6 +1,8 @@
 version: 3.0.{build}
 pull_requests:
   do_not_increment_build_number: true
+image:
+  - Visual Studio 2019
 configuration: Release
 shallow_clone: true
 assembly_info:
@@ -9,11 +11,17 @@ assembly_info:
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
+dotnet_csproj:
+    patch: true
+    file: '**\*.csproj'
+    package_version: '{version}'
 nuget:
-  account_feed: true
-  project_feed: true
+  account_feed: false
+  project_feed: false
 before_build:
 - cmd: nuget restore
+- ps: >-
+    dotnet restore
 build:
   publish_nuget: true
   include_nuget_references: true
